@@ -25,11 +25,7 @@ namespace Tcpservers
             serverSocket.Bind(ipEndPoint);
             serverSocket.Listen(0);
 
-
             serverSocket.BeginAccept(BeginAcceptAsync, serverSocket);
-            //
-
-
         }
 
         static void BeginAcceptAsync(IAsyncResult ar)
@@ -48,12 +44,42 @@ namespace Tcpservers
         static byte[] dataBuffer = new byte[1024];
         static void ServerReceiveMsg(IAsyncResult ar)
         {
-            Socket clientSocket = ar.AsyncState as Socket;
-            int count = clientSocket.EndReceive(ar);
-            string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
 
-            Console.WriteLine("Receive msg form client : " + msg);
-            clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ServerReceiveMsg, clientSocket);
+            Socket clientSocket = null;
+
+            try
+            {
+                clientSocket = ar.AsyncState as Socket;
+                int count = clientSocket.EndReceive(ar);
+
+                if (count == 0)
+                {
+                    clientSocket.Close();
+                    return;
+                }
+
+                string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
+
+                Console.WriteLine("Receive msg form client : " + msg);
+                clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ServerReceiveMsg, clientSocket);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("SERVER ERROR INFO ::   " + e);
+
+                if (clientSocket != null)
+                {
+                    clientSocket.Close();
+                }
+            }
+
+            //Socket clientSocket = ar.AsyncState as Socket;
+            //int count = clientSocket.EndReceive(ar);
+
+            //string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
+
+            //Console.WriteLine("Receive msg form client : " + msg);
+            //clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ServerReceiveMsg, clientSocket);
         }
     }
 }

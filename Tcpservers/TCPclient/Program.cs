@@ -24,10 +24,14 @@ namespace TCPclient
             while (true)
             {
                 string s = Console.ReadLine();
+                if (s == "q")
+                {
+                    clientSocket.Close();
+                }
                 clientSocket.Send(Encoding.UTF8.GetBytes(s));
             }
 
-            clientSocket.Close();
+            //clientSocket.Close();
         }
     }
 }
