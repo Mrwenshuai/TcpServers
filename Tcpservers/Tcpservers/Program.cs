@@ -27,30 +27,37 @@ namespace Tcpservers
 
             serverSocket.BeginAccept(BeginAcceptAsync, serverSocket);
         }
-
+        /// <summary>
+        /// 开始异步，向客户端发送一条msg消息
+        /// </summary>
+        /// <param name="ar"></param>
         static void BeginAcceptAsync(IAsyncResult ar)
         {
             Socket serverSocket = ar.AsyncState as Socket;
             Socket clientSocket = serverSocket.EndAccept(ar);
 
-            string msg = " hello client , 你好！ ";
-            byte[] data = Encoding.UTF8.GetBytes(msg);
+            string msgStr = " hello client , 你好！ ";
+            byte[] data = Encoding.UTF8.GetBytes(msgStr);
             clientSocket.Send(data);
-
-            clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ServerReceiveMsg, clientSocket);
+            //开始接收消息
+            clientSocket.BeginReceive(msg.Data, msg.StartIndex, msg.RemainSize, SocketFlags.None, ServerReceiveCallBackMsg, clientSocket);
             serverSocket.BeginAccept(BeginAcceptAsync, serverSocket);
         }
 
         static byte[] dataBuffer = new byte[1024];
-        static void ServerReceiveMsg(IAsyncResult ar)
+        static Message msg = new Message();
+
+        /// <summary>
+        /// 开始接收客户端消息回调
+        /// </summary>
+        /// <param name="ar"></param>
+        static void ServerReceiveCallBackMsg(IAsyncResult ar)
         {
-
             Socket clientSocket = null;
-
             try
             {
                 clientSocket = ar.AsyncState as Socket;
-                int count = clientSocket.EndReceive(ar);
+                int count = clientSocket.EndReceive(ar);//获取读取到的消息的长度
 
                 if (count == 0)
                 {
@@ -58,10 +65,14 @@ namespace Tcpservers
                     return;
                 }
 
-                string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
+                msg.AddCount(count);//更新message中startindex的长度
+                //string msgStr = Encoding.UTF8.GetString(dataBuffer, 0, count);
+                //Console.WriteLine("Receive msg form client : " + msgStr);
+                //clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ServerReceiveCallBackMsg, clientSocket);
+                msg.ReadMessage();
 
-                Console.WriteLine("Receive msg form client : " + msg);
-                clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ServerReceiveMsg, clientSocket);
+                clientSocket.BeginReceive(msg.Data, msg.StartIndex, msg.RemainSize, SocketFlags.None, ServerReceiveCallBackMsg, clientSocket);
+
             }
             catch (Exception e)
             {
@@ -72,14 +83,6 @@ namespace Tcpservers
                     clientSocket.Close();
                 }
             }
-
-            //Socket clientSocket = ar.AsyncState as Socket;
-            //int count = clientSocket.EndReceive(ar);
-
-            //string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
-
-            //Console.WriteLine("Receive msg form client : " + msg);
-            //clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ServerReceiveMsg, clientSocket);
         }
     }
 }

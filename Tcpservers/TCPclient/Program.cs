@@ -21,17 +21,26 @@ namespace TCPclient
             string msg = Encoding.UTF8.GetString(data, 0, count);
 
             Console.WriteLine(msg + "  ---->> msg");
-            while (true)
+            //while (true)
+            //{
+            //    string s = Console.ReadLine();
+            //    if (s == "q")
+            //    {
+            //        clientSocket.Close();
+            //    }
+            //    clientSocket.Send(Encoding.UTF8.GetBytes(s));
+            //}
+
+            for (int i = 0; i < 100; i++)
             {
-                string s = Console.ReadLine();
-                if (s == "q")
-                {
-                    clientSocket.Close();
-                }
-                clientSocket.Send(Encoding.UTF8.GetBytes(s));
+                clientSocket.Send(Message.GetBytes(i.ToString()));
             }
 
-            //clientSocket.Close();
+            //string s = @"lfadjflfladkjfladjfl";
+            //clientSocket.Send(Encoding.UTF8.GetBytes(s));
+
+            Console.ReadKey();
+            clientSocket.Close();
         }
     }
 }
