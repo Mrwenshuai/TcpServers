@@ -58,6 +58,7 @@ namespace MySqlOperationDemo
             //cmds.ExecuteNonQuery();
 
             #endregion
+
             conn.Close();
 
             Console.ReadKey();
