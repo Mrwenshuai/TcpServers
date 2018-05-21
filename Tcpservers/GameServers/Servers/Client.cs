@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using Common;
 
-namespace GameServers.Server
+namespace GameServers.Servers
 {
     class Client
     {
@@ -39,7 +40,7 @@ namespace GameServers.Server
                 {
                     Close();
                 }
-                msg.ReadMessage(count);
+                msg.ReadMessage(count, OnProcessMessage);
                 //TO DO 处理接收数据
                 Start();
             }
@@ -48,6 +49,16 @@ namespace GameServers.Server
                 Console.WriteLine(e);
                 Close();
             }
+        }
+        /// <summary>
+        /// 作为回调函数传递
+        /// </summary>
+        /// <param name="requestCode"></param>
+        /// <param name="actionCode"></param>
+        /// <param name="data"></param>
+        private void OnProcessMessage(RequestCode requestCode, ActionCode actionCode, string data)
+        {
+            server.HandleRequest(requestCode, actionCode, data, this);
         }
 
         public void Close()
