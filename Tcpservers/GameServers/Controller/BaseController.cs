@@ -21,9 +21,6 @@ namespace GameServers.Controller
         /// </summary>
         /// <param name="data">客户端发送过来的数据，返回值为返回给客户端的信息</param>
         /// <returns></returns>
-        public virtual string DefaultHandle(string data) { return null; }
-
-
-        public virtual void DefaultHandle(string data , Client client,Server server) { }
+        public virtual string DefaultHandle(string data, Client client, Server server) { return null; }
     }
 }

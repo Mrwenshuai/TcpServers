@@ -65,7 +65,7 @@ namespace GameServers.Servers
         /// <param name="data"></param>
         public void SendResponse(Client client, RequestCode requestCode, string data)
         {
-
+            client.Send(requestCode, data);
         }
         /// <summary>
         /// 用来处理消息的方法

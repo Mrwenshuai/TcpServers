@@ -10,6 +10,8 @@ namespace GameServers
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Start Server Services");
+            Console.ReadKey();
         }
     }
 }
