@@ -75,7 +75,8 @@ namespace GameServers.Servers
 
             byte[] dataAmoutBytes = BitConverter.GetBytes(amount);//数据的第三段
 
-            return (byte[])dataAmoutBytes.Concat(requestBytes).Concat(dataBytes);
+            byte[] backBytes = dataAmoutBytes.Concat(requestBytes).ToArray<byte>(); //修改返回信息类型
+            return backBytes.Concat(dataBytes).ToArray();
         }
     }
 }

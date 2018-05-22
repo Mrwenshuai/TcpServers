@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
-      <Project>{31780E65-CD53-4597-AEC9-A13A63AC279B}</Project>
+      <Project>{6237fe6d-e357-4201-862a-b4aa80de5ef2}</Project>
       <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
