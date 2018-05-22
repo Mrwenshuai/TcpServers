@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using GameServers.Controller;
+using Common;
 
-namespace GameServers.Server
+namespace GameServers.Servers
 {
     class Server
     {
         Socket serverSocket = null;
         private IPEndPoint ipEndPoint;
         private List<Client> clientList;
-        private ControllerManager controllerManager = new ControllerManager();
+        private ControllerManager controllerManager;
 
         public Server()
         {
@@ -22,6 +23,7 @@ namespace GameServers.Server
 
         public Server(string ip, int port)
         {
+            controllerManager = new ControllerManager(this);
             SetIpAndPort(ip, port);
         }
 
@@ -54,6 +56,27 @@ namespace GameServers.Server
             {
                 clientList.Remove(client);
             }
+        }
+        /// <summary>
+        /// 给客户端发起响应
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="requestCode"></param>
+        /// <param name="data"></param>
+        public void SendResponse(Client client, RequestCode requestCode, string data)
+        {
+
+        }
+        /// <summary>
+        /// 用来处理消息的方法
+        /// </summary>
+        /// <param name="requestCode"></param>
+        /// <param name="actionCode"></param>
+        /// <param name="data"></param>
+        /// <param name="client"></param>
+        public void HandleRequest(RequestCode requestCode, ActionCode actionCode, string data, Client client)
+        {
+            controllerManager.HandleRequest(requestCode, actionCode, data, client);
         }
     }
 }
