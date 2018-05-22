@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common;
+using CommonLib;
 using System.Reflection;
+using GameServers.Servers;
 
 namespace GameServers.Controller
 {
@@ -12,9 +13,10 @@ namespace GameServers.Controller
     {
         private Dictionary<RequestCode, BaseController> controllerDict = new Dictionary<RequestCode, BaseController>();
 
-
-        public ControllerManager()
+        private Server server;
+        public ControllerManager(Server server)
         {
+            this.server = server;
             Init();
         }
 
@@ -30,7 +32,7 @@ namespace GameServers.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <param name="actionCode"></param>
-        public void HandleRequest(RequestCode request, ActionCode actionCode, string data)
+        public void HandleRequest(RequestCode request, ActionCode actionCode, string data, Client client)
         {
             BaseController baseController;
 

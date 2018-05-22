@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common
+namespace CommonLib
 {
-    public enum RequestCode//一个request对应一个客户端
+    public enum RequestCode
     {
         None,
     }

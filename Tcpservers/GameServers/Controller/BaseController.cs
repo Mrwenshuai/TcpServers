@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common;
+using CommonLib;
 using GameServers.Servers;
 
 namespace GameServers.Controller
@@ -23,11 +23,6 @@ namespace GameServers.Controller
         /// <returns></returns>
         public virtual string DefaultHandle(string data) { return null; }
 
-
-        public RequestCode RequestCode
-        {
-            get { return requestCode; }
-        }
 
         public virtual void DefaultHandle(string data , Client client,Server server) { }
     }

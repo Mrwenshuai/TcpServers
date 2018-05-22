@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using GameServers.Controller;
-using Common;
+using CommonLib;
 
 namespace GameServers.Servers
 {
@@ -14,7 +14,7 @@ namespace GameServers.Servers
     {
         Socket serverSocket = null;
         private IPEndPoint ipEndPoint;
-        private List<Client> clientList;
+        private List<Client> clientList = new List<Client>();
         private ControllerManager controllerManager;
 
         public Server()
